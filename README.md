@@ -1,0 +1,2 @@
+# Youtube Thumbnail AI Slop Classifier
+This repository offers an extension that automaticall classifies thumbnails on youtube rather they are (most likely) AI generated, or drafted together by a real person
