@@ -1,0 +1,22 @@
+ .ai-score-container {
+    position: relative !important;
+  }
+
+  .ai-score-badge {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    z-index: 9999;
+
+    padding: 4px 7px;
+    border-radius: 5px;
+
+    color: white;
+    background: rgba(220, 30, 30, 0.9);
+
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+
+    pointer-events: none;
+  }
