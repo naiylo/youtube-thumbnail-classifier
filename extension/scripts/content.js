@@ -1,10 +1,48 @@
 const THUMBNAIL_SELECTOR = "ytd-thumbnail, yt-thumbnail-view-model";
 
+function getVideoIdFromUrl(thumbnailUrl) {
+    const match = thumbnailUrl.match(/\/vi\/([^/]+)\//);
+    return match?.[1] ?? null;
+  }
+
+function classifyThumbnail(thumbnailData) {
+    console.log("Classifying thumbnail:", thumbnailData);
+
+    // Temporary result until a real classifier is connected.
+    return 42;
+  }
+
 function addScoreBadge(thumbnail) {
   // Do not add the badge twice.
   if (thumbnail.querySelector(".ai-score-badge")) {
     return;
   }
+
+  const image = thumbnail.querySelector("img");
+
+  if (!image) {
+    return;
+  }
+
+  const thumbnailUrl = image?.currentSrc || image?.src;
+
+  if (!thumbnailUrl) {
+    image.addEventListener(
+      "load",
+      () => addScoreBadge(thumbnail),
+      { once: true }
+    );
+
+    return;
+  }
+
+  const thumbnailData = {
+    videoId: getVideoIdFromUrl(thumbnailUrl),
+    imageUrl: thumbnailUrl,
+    title: image.alt || null,
+  };
+
+  console.log("Thumbnail data:", thumbnailData);
 
   thumbnail.classList.add("ai-score-container");
 
@@ -12,7 +50,7 @@ function addScoreBadge(thumbnail) {
   badge.className = "ai-score-badge";
 
   // Temporary fake score.
-  const score = 42;
+  const score = classifyThumbnail(thumbnailData);
   badge.textContent = `${score}% AI`;
 
   thumbnail.appendChild(badge);
