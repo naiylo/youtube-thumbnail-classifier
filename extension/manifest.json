@@ -3,6 +3,9 @@
     "name": "AI Thumbnail Detector",
     "version": "0.1.0",
     "description": "Displays estimated AI likelihood scores on YouTube thumbnails.",
+    "background": {
+      "service_worker": "scripts/background.js"
+    },
     "content_scripts": [
       {
         "matches": ["https://www.youtube.com/*"],

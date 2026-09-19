@@ -1,8 +1,8 @@
 async function classifyThumbnail(thumbnailData) {
-    console.log("Classifying thumbnail:", thumbnailData);
+    const response = await chrome.runtime.sendMessage({
+      type: "classify-thumbnail",
+      thumbnailData,
+    });
 
-    // Simulate waiting for a model or API.
-    await new Promise((resolve) => setTimeout(resolve, 5000));
-
-    return 42;
+    return response.score;
   }
