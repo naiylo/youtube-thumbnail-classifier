@@ -5,14 +5,7 @@ function getVideoIdFromUrl(thumbnailUrl) {
     return match?.[1] ?? null;
   }
 
-function classifyThumbnail(thumbnailData) {
-    console.log("Classifying thumbnail:", thumbnailData);
-
-    // Temporary result until a real classifier is connected.
-    return 42;
-  }
-
-function addScoreBadge(thumbnail) {
+async function addScoreBadge(thumbnail) {
   // Do not add the badge twice.
   if (thumbnail.querySelector(".ai-score-badge")) {
     return;
@@ -49,11 +42,16 @@ function addScoreBadge(thumbnail) {
   const badge = document.createElement("div");
   badge.className = "ai-score-badge";
 
-  // Temporary fake score.
-  const score = classifyThumbnail(thumbnailData);
-  badge.textContent = `${score}% AI`;
-
+  badge.textContent = "Analyzing...";
   thumbnail.appendChild(badge);
+
+  try {
+    const score = await classifyThumbnail(thumbnailData);
+    badge.textContent = `${score}% AI`;
+  } catch (error) {
+    badge.textContent = "Analysis failed";
+    console.error("Could not classify thumbnail:", error);
+  }
 }
 
 function processThumbnails(root = document) {

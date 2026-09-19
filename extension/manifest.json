@@ -6,7 +6,10 @@
     "content_scripts": [
       {
         "matches": ["https://www.youtube.com/*"],
-        "js": ["scripts/content.js"],
+        "js": [
+          "scripts/classifier.js",
+          "scripts/content.js"
+          ],
         "css": ["styles/content.css"]
       }
     ]
