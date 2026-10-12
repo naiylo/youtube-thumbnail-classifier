@@ -4,5 +4,13 @@ async function classifyThumbnail(thumbnailData) {
       thumbnailData,
     });
 
+    if (!response) {
+      throw new Error("Classifier did not return a response");
+    }
+
+    if (response.error) {
+      throw new Error(response.error);
+    }
+
     return response.score;
   }
