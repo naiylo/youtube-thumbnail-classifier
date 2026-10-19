@@ -41,15 +41,41 @@ async function addScoreBadge(thumbnail) {
 
   const badge = document.createElement("div");
   badge.className = "ai-score-badge";
+  badge.dataset.state = "loading";
+  badge.setAttribute("role", "status");
+  badge.setAttribute("aria-live", "polite");
+  badge.setAttribute("aria-label", "Analyzing thumbnail");
+  badge.innerHTML = `
+    <span class="ai-score-badge__indicator" aria-hidden="true"></span>
+    <span class="ai-score-badge__value">Analyzing</span>
+  `;
 
-  badge.textContent = "Analyzing...";
   thumbnail.appendChild(badge);
 
   try {
     const score = await classifyThumbnail(thumbnailData);
-    badge.textContent = `${score}% AI`;
+    const displayScore = Math.round(Math.max(0, Math.min(100, score)));
+    const confidenceLevel = displayScore >= 70
+      ? "high"
+      : displayScore >= 40
+        ? "medium"
+        : "low";
+
+    badge.dataset.state = "complete";
+    badge.dataset.level = confidenceLevel;
+    badge.setAttribute("aria-label", `${displayScore}% AI likelihood`);
+    badge.innerHTML = `
+      <span class="ai-score-badge__indicator" aria-hidden="true"></span>
+      <span class="ai-score-badge__value">${displayScore}%</span>
+      <span class="ai-score-badge__label">AI</span>
+    `;
   } catch (error) {
-    badge.textContent = "Analysis failed";
+    badge.dataset.state = "error";
+    badge.setAttribute("aria-label", "Thumbnail analysis failed");
+    badge.innerHTML = `
+      <span class="ai-score-badge__indicator" aria-hidden="true"></span>
+      <span class="ai-score-badge__value">Unavailable</span>
+    `;
     console.error("Could not classify thumbnail:", error);
   }
 }
